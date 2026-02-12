@@ -610,6 +610,42 @@
       margin: 0.5rem 0;
     }
 
+    .kesan-pesan-wrap {
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 1.25rem 1rem;
+      background: rgba(232, 74, 111, 0.12);
+      border: 1px solid rgba(232, 74, 111, 0.35);
+      border-radius: 16px;
+      text-align: left;
+    }
+
+    .kesan-pesan-wrap h3 {
+      font-size: 1rem;
+      color: var(--accent-soft);
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+
+    .kesan-pesan-wrap .kesan,
+    .kesan-pesan-wrap .pesan {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: rgba(254, 248, 240, 0.95);
+      margin-bottom: 0.75rem;
+    }
+
+    .kesan-pesan-wrap .pesan {
+      margin-bottom: 0;
+    }
+
+    .kesan-pesan-wrap .label {
+      font-size: 0.75rem;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
     /* Confetti */
     #confetti {
       position: fixed;
@@ -808,106 +844,69 @@
       background: rgba(232, 74, 111, 0.5);
     }
 
-    /* Flappy game */
-    #flappy-container {
+    /* Tap 5 Hearts game - responsive */
+    .tap-hearts-container {
       position: relative;
       width: 100%;
-      max-width: 320px;
-      height: 420px;
+      min-height: 50vh;
+      min-height: 50dvh;
+      max-height: 70vh;
+      max-height: 70dvh;
       background: linear-gradient(180deg, #2a1a2e 0%, #1a0a0f 100%);
       border-radius: 16px;
-      overflow: hidden;
       border: 2px solid rgba(212, 168, 83, 0.4);
       margin: 1rem 0;
+      overflow: hidden;
     }
 
-    #flappy-bird {
-      position: absolute;
-      left: 60px;
-      top: 50%;
-      width: 36px;
-      height: 36px;
-      font-size: 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 4;
-      transition: top 0.05s linear;
-    }
-
-    .flappy-pipe {
-      position: absolute;
-      width: 50px;
-      background: linear-gradient(180deg, rgba(232, 74, 111, 0.9) 0%, rgba(194, 58, 82, 0.9) 100%);
-      border: 2px solid var(--accent-soft);
-      border-radius: 6px;
-      z-index: 2;
-    }
-
-    .flappy-gap {
-      position: absolute;
-      width: 50px;
-      background: transparent;
-      z-index: 1;
-    }
-
-    #flappy-score {
-      position: absolute;
-      top: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 1.25rem;
+    .tap-hearts-score {
+      padding: 0.75rem;
+      font-size: 1.1rem;
       font-weight: 700;
       color: var(--accent-soft);
-      z-index: 5;
+      text-align: center;
     }
 
-    #flappy-hint {
-      position: absolute;
-      bottom: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.8rem;
-      color: var(--gold);
-      z-index: 5;
-    }
-
-    .flappy-start-overlay {
+    .tap-hearts-area {
       position: absolute;
       inset: 0;
-      background: rgba(0,0,0,0.5);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
+      top: 48px;
       padding: 1rem;
     }
 
-    .flappy-start-overlay.hidden {
-      display: none;
-    }
-
-    .flappy-gameover {
+    .tap-heart-btn {
       position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.75);
-      display: none;
-      flex-direction: column;
+      width: clamp(48px, 12vw, 72px);
+      height: clamp(48px, 12vw, 72px);
+      min-width: 48px;
+      min-height: 48px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 10;
-      padding: 1rem;
+      font-size: clamp(2rem, 8vw, 3rem);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: transform 0.2s ease, opacity 0.3s ease;
+      -webkit-tap-highlight-color: transparent;
+      animation: heartPop 0.5s ease-out;
     }
 
-    .flappy-gameover.show {
-      display: flex;
+    .tap-heart-btn:active {
+      transform: translate(-50%, -50%) scale(0.85);
     }
 
-    .flappy-gameover p {
-      color: var(--accent-soft);
-      font-size: 1.1rem;
-      margin-bottom: 1rem;
+    .tap-heart-btn.collected {
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.3);
+    }
+
+    @keyframes heartPop {
+      0% { transform: scale(0); opacity: 0; }
+      60% { transform: scale(1.15); }
+      100% { transform: scale(1); opacity: 1; }
     }
 
     .gate-success-heart {
@@ -931,20 +930,11 @@
       <div class="quiz-choices" id="quiz-choices"></div>
     </div>
     <div id="gate-flappy" class="gate-step">
-      <h2 class="gate-title">🐦 Flappy Heart</h2>
-      <p class="gate-desc">Tap layar buat terbang! Lewatin 5 hati biar suratnya kebuka. Jangan nabrak ya 💕</p>
-      <div id="flappy-container">
-        <div id="flappy-score">0 / 5</div>
-        <div id="flappy-hint">Tap untuk mulai</div>
-        <div class="flappy-start-overlay" id="flappy-start-overlay">
-          <p style="color: var(--accent-soft); margin-bottom: 0.5rem;">Tap untuk terbang!</p>
-          <button type="button" class="btn" id="flappy-start-btn">Mulai</button>
-        </div>
-        <div class="flappy-gameover" id="flappy-gameover">
-          <p>Nabrak! Coba lagi yaa 💪</p>
-          <button type="button" class="btn" id="flappy-retry-btn">Coba Lagi</button>
-        </div>
-        <div id="flappy-bird">💕</div>
+      <h2 class="gate-title">💕 Tap 5 Hati</h2>
+      <p class="gate-desc">Tap 5 hati yang muncul buat buka suratnya. Gampang kan? 💕</p>
+      <div class="tap-hearts-container">
+        <div class="tap-hearts-score" id="tap-hearts-score">0 / 5</div>
+        <div class="tap-hearts-area" id="tap-hearts-area"></div>
       </div>
     </div>
     <div id="gate-success" class="gate-step">
@@ -1064,6 +1054,13 @@
         <img src="assets/opang-2.png" alt="Opang" class="opang-photo" loading="lazy">
         <p class="opang-message">Lily, kamu nanti pas di Bandung bakal liat muka ini terus yaa sayang—yang sabar yaa hehehe. <strong>Aku cinta bangett sama kamu sampe mati.</strong> 💕</p>
       </div>
+      <div class="kesan-pesan-wrap">
+        <h3>💕 Kesan & Pesan bareng aku</h3>
+        <p class="label">Kesan</p>
+        <p class="kesan">Lily, dari awal kenal sampai sekarang, kesan aku ke kamu tuh cuma satu: kamu orang yang worth it buat diperjuangin. Terima kasih udah mau berubah bareng, mau jaga kita, dan mau sama aku meski LDR. Aku ngerasa beruntung banget.</p>
+        <p class="label">Pesan</p>
+        <p class="pesan">Pesan aku: jangan pernah berhenti komunikasi sama aku. Kita tetap jaga kesehatan, sikap, dan komitmen kita. Sampai ketemu di Bandung—nanti kita lanjutin cerita kita dari sini. Aku sayang kamu. 💕</p>
+      </div>
       <p class="sign" style="margin-top: 1.25rem; text-align: center; font-weight: 600; color: var(--accent-soft);">Dari <span class="strike">Opang</span> <span class="future">"Suami kamu dari masa depan"</span></p>
     </div>
   </section>
@@ -1150,7 +1147,7 @@
         if (quizIndex >= quizData.length) {
           sendQuizToEmail(quizAnswers);
           showStep(gateFlappy);
-          initFlappy();
+          initTapHearts();
           return;
         }
         var d = quizData[quizIndex];
@@ -1171,160 +1168,43 @@
         });
       }
 
-      function initFlappy() {
-        var container = document.getElementById('flappy-container');
-        var bird = document.getElementById('flappy-bird');
-        var scoreEl = document.getElementById('flappy-score');
-        var hint = document.getElementById('flappy-hint');
-        var startOverlay = document.getElementById('flappy-start-overlay');
-        var gameover = document.getElementById('flappy-gameover');
-        var startBtn = document.getElementById('flappy-start-btn');
-        var retryBtn = document.getElementById('flappy-retry-btn');
-
-        var birdTop = 50;
-        var velocity = 0;
-        var gravity = 0.6;
-        var pipes = [];
+      function initTapHearts() {
+        var area = document.getElementById('tap-hearts-area');
+        var scoreEl = document.getElementById('tap-hearts-score');
         var score = 0;
-        var gameStarted = false;
-        var gameOver = false;
-        var animId = null;
-        var WIN_SCORE = 5;
-        var pipeW = 50;
-        var gap = 120;
-        var containerHeight = 420;
-        var containerWidth = container.offsetWidth || 320;
+        var WIN = 5;
+        var hearts = ['💕', '💗', '💖', '♥', '❤️'];
+        var positions = [
+          { top: 5, left: 10 },
+          { top: 25, left: 55 },
+          { top: 50, left: 15 },
+          { top: 65, left: 60 },
+          { top: 80, left: 35 }
+        ];
 
-        function spawnPipe() {
-          var gapTop = 80 + Math.random() * (containerHeight - gap - 160);
-          var topH = gapTop;
-          var bottomH = containerHeight - gapTop - gap;
-          var pipe = {
-            x: containerWidth,
-            topH: topH,
-            bottomH: bottomH,
-            passed: false
-          };
-          pipes.push(pipe);
-        }
+        area.innerHTML = '';
+        score = 0;
+        scoreEl.textContent = '0 / ' + WIN;
 
-        function flap() {
-          if (!gameStarted || gameOver) return;
-          velocity = -9;
-        }
-
-        function startGame() {
-          gameStarted = true;
-          gameOver = false;
-          startOverlay.classList.add('hidden');
-          hint.classList.add('hidden');
-          birdTop = containerHeight / 2 - 18;
-          velocity = 0;
-          pipes = [];
-          score = 0;
-          scoreEl.textContent = '0 / ' + WIN_SCORE;
-          gameover.classList.remove('show');
-          spawnPipe();
-          startPipeDraw();
-          loop();
-        }
-
-        function endGame() {
-          gameOver = true;
-          if (animId) cancelAnimationFrame(animId);
-          gameover.classList.add('show');
-          hint.classList.remove('hidden');
-        }
-
-        function winGame() {
-          gameOver = true;
-          if (animId) cancelAnimationFrame(animId);
-          showStep(gateSuccess);
-        }
-
-        function loop() {
-          if (gameOver) return;
-          velocity += gravity;
-          birdTop += velocity;
-          if (birdTop < 0) birdTop = 0;
-          if (birdTop > containerHeight - 36) {
-            endGame();
-            return;
-          }
-          bird.style.top = birdTop + 'px';
-
-          var birdLeft = 60;
-          var birdRight = 96;
-          var birdT = birdTop;
-          var birdB = birdTop + 36;
-
-          for (var i = pipes.length - 1; i >= 0; i--) {
-            var p = pipes[i];
-            p.x -= 4;
-            if (p.x + pipeW < birdLeft && !p.passed) {
-              p.passed = true;
-              score++;
-              scoreEl.textContent = score + ' / ' + WIN_SCORE;
-              if (score >= WIN_SCORE) {
-                winGame();
-                return;
-              }
+        positions.forEach(function (pos, i) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'tap-heart-btn';
+          btn.setAttribute('aria-label', 'Tap hati');
+          btn.textContent = hearts[i % hearts.length];
+          btn.style.top = pos.top + '%';
+          btn.style.left = pos.left + '%';
+          btn.style.transform = 'translate(-50%, -50%)';
+          btn.addEventListener('click', function () {
+            if (btn.classList.contains('collected')) return;
+            btn.classList.add('collected');
+            score++;
+            scoreEl.textContent = score + ' / ' + WIN;
+            if (score >= WIN) {
+              setTimeout(function () { showStep(gateSuccess); }, 400);
             }
-            var pipeLeft = p.x;
-            var pipeRight = p.x + pipeW;
-            if (birdRight > pipeLeft && birdLeft < pipeRight) {
-              if (birdT < p.topH || birdB > containerHeight - p.bottomH) {
-                endGame();
-                return;
-              }
-            }
-            if (p.x + pipeW < 0) pipes.splice(i, 1);
-          }
-
-          if (pipes.length > 0 && pipes[pipes.length - 1].x < containerWidth - 180) spawnPipe();
-          animId = requestAnimationFrame(loop);
-        }
-
-        function drawPipes() {
-          var existing = container.querySelectorAll('.flappy-pipe-el');
-          existing.forEach(function (el) { el.remove(); });
-          pipes.forEach(function (p) {
-            var top = document.createElement('div');
-            top.className = 'flappy-pipe flappy-pipe-el';
-            top.style.left = p.x + 'px';
-            top.style.top = '0';
-            top.style.height = p.topH + 'px';
-            container.appendChild(top);
-            var bot = document.createElement('div');
-            bot.className = 'flappy-pipe flappy-pipe-el';
-            bot.style.left = p.x + 'px';
-            bot.style.bottom = '0';
-            bot.style.height = p.bottomH + 'px';
-            container.appendChild(bot);
           });
-        }
-
-        var pipeDrawInterval;
-
-        function startPipeDraw() {
-          pipeDrawInterval = setInterval(function () {
-            if (gameOver) { clearInterval(pipeDrawInterval); return; }
-            drawPipes();
-          }, 50);
-        }
-
-        container.addEventListener('click', flap);
-        container.addEventListener('touchstart', function (e) { e.preventDefault(); flap(); });
-        startBtn.addEventListener('click', startGame);
-        retryBtn.addEventListener('click', function () {
-          gameover.classList.remove('show');
-          startOverlay.classList.remove('hidden');
-          hint.classList.remove('hidden');
-          scoreEl.textContent = '0 / ' + WIN_SCORE;
-          bird.style.top = '50%';
-          gameStarted = false;
-          gameOver = false;
-          pipes = [];
+          area.appendChild(btn);
         });
       }
 
