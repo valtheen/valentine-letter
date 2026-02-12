@@ -44,6 +44,11 @@ Agar jawaban dan pilihan Lily dari kuis terkirim ke **Fathinnauval@gmail.com**:
 
 Setelah Lily selesai menjawab 8 pertanyaan kuis, jawabannya otomatis terkirim ke **Fathinnauval@gmail.com** (subject: "💌 Jawaban Kuis Valentine - Lily").
 
+**Cara cek respons / jawaban user (Lily):**
+1. **Lewat email** — Setiap kali ada yang selesai kuis, Formspree kirim ke **Fathinnauval@gmail.com**. Cek inbox (dan folder Spam kalau belum dapat).
+2. **Lewat dashboard Formspree** — Buka **https://formspree.io** → Login → klik form **valentine-letter** (atau form yang pakai ID `xnjbpnbe`). Di sana ada tab **"Submissions"**: semua jawaban kuis (tanggal, isi pesan, dll) muncul di situ. Bisa dibuka satu per satu untuk lihat detail.
+3. **Notifikasi** — Di Formspree, pastikan notifikasi email untuk form ini **ON** (Settings form → Notifications) biar tiap submission tetap dikirim ke email kamu.
+
 ## 5. Link untuk dibagikan
 - **https://valtheen.github.io/valentine-letter/**
 - Kirim link ini ke Lily via WA; bisa dibuka di HP.

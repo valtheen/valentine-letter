@@ -391,8 +391,9 @@
 
     .gallery-grid img {
       width: 100%;
-      height: 140px;
+      height: 200px;
       object-fit: cover;
+      object-position: center top;
       border-radius: 12px;
       border: 2px solid rgba(212, 168, 83, 0.3);
       box-shadow: 0 4px 16px rgba(0,0,0,0.3);
@@ -644,6 +645,80 @@
       color: var(--gold);
       font-weight: 600;
       margin-bottom: 0.25rem;
+    }
+
+    /* Kesan & Pesan dari pacar (Lily) untuk Opang */
+    .kesan-pesan-dari-kamu {
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 1.25rem 1rem;
+      background: rgba(212, 168, 83, 0.1);
+      border: 1px solid rgba(212, 168, 83, 0.35);
+      border-radius: 16px;
+      text-align: left;
+    }
+
+    .kesan-pesan-dari-kamu h3 {
+      font-size: 1rem;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    .kesan-pesan-dari-kamu .intro {
+      font-size: 0.85rem;
+      color: rgba(254, 248, 240, 0.9);
+      text-align: center;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    .kesan-pesan-dari-kamu label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--accent-soft);
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+
+    .kesan-pesan-dari-kamu textarea {
+      width: 100%;
+      min-height: 72px;
+      padding: 0.65rem;
+      margin-bottom: 0.85rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--ink);
+      background: rgba(254, 248, 240, 0.95);
+      border: 1px solid rgba(212, 168, 83, 0.4);
+      border-radius: 10px;
+      resize: vertical;
+      -webkit-appearance: none;
+    }
+
+    .kesan-pesan-dari-kamu textarea::placeholder {
+      color: #999;
+    }
+
+    .kesan-pesan-dari-kamu .btn-kirim {
+      display: block;
+      width: 100%;
+      margin-top: 0.5rem;
+      padding: 0.65rem;
+      font-size: 0.95rem;
+    }
+
+    .kesan-pesan-dari-kamu .terima-kasih-msg {
+      display: none;
+      font-size: 0.9rem;
+      color: var(--accent-soft);
+      text-align: center;
+      margin-top: 0.75rem;
+      font-weight: 600;
+    }
+
+    .kesan-pesan-dari-kamu .terima-kasih-msg.show {
+      display: block;
     }
 
     /* Confetti */
@@ -1061,6 +1136,16 @@
         <p class="label">Pesan</p>
         <p class="pesan">Pesan aku: jangan pernah berhenti komunikasi sama aku. Kita tetap jaga kesehatan, sikap, dan komitmen kita. Sampai ketemu di Bandung—nanti kita lanjutin cerita kita dari sini. Aku sayang kamu. 💕</p>
       </div>
+      <div class="kesan-pesan-dari-kamu">
+        <h3>💌 Kesan & Pesan dari kamu (untuk aku)</h3>
+        <p class="intro">Sayang, mau dong denger kesan dan pesan kamu ke aku selama ini. Isi di bawah ya, nanti aku baca 💕</p>
+        <label for="lily-kesan">Kesan kamu ke aku</label>
+        <textarea id="lily-kesan" placeholder="Tulis kesan kamu selama kita jalan..." maxlength="500" rows="3"></textarea>
+        <label for="lily-pesan">Pesan kamu ke aku</label>
+        <textarea id="lily-pesan" placeholder="Tulis pesan kamu buat aku..." maxlength="500" rows="3"></textarea>
+        <button type="button" class="btn btn-kirim" id="lily-kirim-btn">Kirim ke Opang 💕</button>
+        <p class="terima-kasih-msg" id="lily-terima-kasih-msg">Terima kasih, pesan kamu udah terkirim! Aku bakal baca ya 💕</p>
+      </div>
       <p class="sign" style="margin-top: 1.25rem; text-align: center; font-weight: 600; color: var(--accent-soft);">Dari <span class="strike">Opang</span> <span class="future">"Suami kamu dari masa depan"</span></p>
     </div>
   </section>
@@ -1216,6 +1301,49 @@
           document.getElementById('section-envelope').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 500);
       });
+
+      // Kirim Kesan & Pesan dari Lily ke Formspree (email ke Opang)
+      var lilyKirimBtn = document.getElementById('lily-kirim-btn');
+      var lilyTerimaKasihMsg = document.getElementById('lily-terima-kasih-msg');
+      if (lilyKirimBtn) {
+        lilyKirimBtn.addEventListener('click', function () {
+          var kesan = (document.getElementById('lily-kesan') && document.getElementById('lily-kesan').value) || '';
+          var pesan = (document.getElementById('lily-pesan') && document.getElementById('lily-pesan').value) || '';
+          if (!FORMSPREE_ID || FORMSPREE_ID === 'YOUR_FORMSPREE_FORM_ID') {
+            lilyTerimaKasihMsg.textContent = 'Formspree belum diatur. Pesan tidak terkirim.';
+            lilyTerimaKasihMsg.classList.add('show');
+            return;
+          }
+          if (!kesan.trim() && !pesan.trim()) {
+            lilyTerimaKasihMsg.textContent = 'Isi kesan atau pesan dulu ya 💕';
+            lilyTerimaKasihMsg.classList.add('show');
+            return;
+          }
+          lilyKirimBtn.disabled = true;
+          lilyKirimBtn.textContent = 'Mengirim...';
+          var body = {
+            _subject: '💌 Kesan & Pesan Lily untuk Opang',
+            message: '--- Kesan ---\n' + kesan + '\n\n--- Pesan ---\n' + pesan,
+            _replyto: ''
+          };
+          fetch('https://formspree.io/f/' + FORMSPREE_ID, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+          }).then(function () {
+            lilyTerimaKasihMsg.textContent = 'Terima kasih, pesan kamu udah terkirim! Aku bakal baca ya 💕';
+            lilyTerimaKasihMsg.classList.add('show');
+            if (document.getElementById('lily-kesan')) document.getElementById('lily-kesan').value = '';
+            if (document.getElementById('lily-pesan')) document.getElementById('lily-pesan').value = '';
+            lilyKirimBtn.textContent = 'Sudah terkirim 💕';
+          }).catch(function () {
+            lilyTerimaKasihMsg.textContent = 'Gagal mengirim. Coba lagi ya.';
+            lilyTerimaKasihMsg.classList.add('show');
+            lilyKirimBtn.disabled = false;
+            lilyKirimBtn.textContent = 'Kirim ke Opang 💕';
+          });
+        });
+      }
     })();
   </script>
   <script>
