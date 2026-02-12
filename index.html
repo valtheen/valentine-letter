@@ -711,9 +711,250 @@
         transform: translateY(0);
       }
     }
+
+    /* ----- Gate: Kuis + Minigame sebelum surat ----- */
+    #gate {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      overflow-y: auto;
+      transition: opacity 0.5s ease;
+    }
+
+    #gate.hidden {
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    body.gate-active .scroll-hint {
+      display: none;
+    }
+
+    .gate-step {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      max-width: 380px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .gate-step.active {
+      display: flex;
+      animation: fadeSlideUp 0.5s ease-out;
+    }
+
+    .gate-title {
+      font-size: 1.35rem;
+      color: var(--accent-soft);
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .gate-desc {
+      font-size: 0.95rem;
+      color: rgba(254, 248, 240, 0.9);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Quiz */
+    .quiz-progress {
+      font-size: 0.8rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .quiz-question {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--paper);
+      margin-bottom: 1.25rem;
+      line-height: 1.5;
+    }
+
+    .quiz-choices {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      width: 100%;
+    }
+
+    .quiz-btn {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: var(--paper);
+      background: rgba(232, 74, 111, 0.35);
+      border: 2px solid rgba(232, 74, 111, 0.6);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+      text-align: center;
+    }
+
+    .quiz-btn:active {
+      transform: scale(0.98);
+    }
+
+    .quiz-btn:hover {
+      background: rgba(232, 74, 111, 0.5);
+    }
+
+    /* Flappy game */
+    #flappy-container {
+      position: relative;
+      width: 100%;
+      max-width: 320px;
+      height: 420px;
+      background: linear-gradient(180deg, #2a1a2e 0%, #1a0a0f 100%);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid rgba(212, 168, 83, 0.4);
+      margin: 1rem 0;
+    }
+
+    #flappy-bird {
+      position: absolute;
+      left: 60px;
+      top: 50%;
+      width: 36px;
+      height: 36px;
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 4;
+      transition: top 0.05s linear;
+    }
+
+    .flappy-pipe {
+      position: absolute;
+      width: 50px;
+      background: linear-gradient(180deg, rgba(232, 74, 111, 0.9) 0%, rgba(194, 58, 82, 0.9) 100%);
+      border: 2px solid var(--accent-soft);
+      border-radius: 6px;
+      z-index: 2;
+    }
+
+    .flappy-gap {
+      position: absolute;
+      width: 50px;
+      background: transparent;
+      z-index: 1;
+    }
+
+    #flappy-score {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent-soft);
+      z-index: 5;
+    }
+
+    #flappy-hint {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.8rem;
+      color: var(--gold);
+      z-index: 5;
+    }
+
+    .flappy-start-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      padding: 1rem;
+    }
+
+    .flappy-start-overlay.hidden {
+      display: none;
+    }
+
+    .flappy-gameover {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      padding: 1rem;
+    }
+
+    .flappy-gameover.show {
+      display: flex;
+    }
+
+    .flappy-gameover p {
+      color: var(--accent-soft);
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .gate-success-heart {
+      font-size: 3rem;
+      margin: 0.5rem 0;
+      animation: heartBeat 1.2s ease-in-out infinite;
+    }
   </style>
 </head>
-<body>
+<body class="gate-active">
+  <!-- Gate: harus selesai kuis + minigame dulu -->
+  <div id="gate">
+    <div id="gate-welcome" class="gate-step active">
+      <h2 class="gate-title">💌 Surat Valentine Buat Kamu</h2>
+      <p class="gate-desc">Sebelum baca suratnya, jawab dulu beberapa pertanyaan dan main game kecil yuk, sayang! 💕</p>
+      <button type="button" class="btn" id="gate-start-btn">Mulai</button>
+    </div>
+    <div id="gate-quiz" class="gate-step">
+      <p class="quiz-progress" id="quiz-progress">Pertanyaan 1 dari 8</p>
+      <p class="quiz-question" id="quiz-question"></p>
+      <div class="quiz-choices" id="quiz-choices"></div>
+    </div>
+    <div id="gate-flappy" class="gate-step">
+      <h2 class="gate-title">🐦 Flappy Heart</h2>
+      <p class="gate-desc">Tap layar buat terbang! Lewatin 5 hati biar suratnya kebuka. Jangan nabrak ya 💕</p>
+      <div id="flappy-container">
+        <div id="flappy-score">0 / 5</div>
+        <div id="flappy-hint">Tap untuk mulai</div>
+        <div class="flappy-start-overlay" id="flappy-start-overlay">
+          <p style="color: var(--accent-soft); margin-bottom: 0.5rem;">Tap untuk terbang!</p>
+          <button type="button" class="btn" id="flappy-start-btn">Mulai</button>
+        </div>
+        <div class="flappy-gameover" id="flappy-gameover">
+          <p>Nabrak! Coba lagi yaa 💪</p>
+          <button type="button" class="btn" id="flappy-retry-btn">Coba Lagi</button>
+        </div>
+        <div id="flappy-bird">💕</div>
+      </div>
+    </div>
+    <div id="gate-success" class="gate-step">
+      <h2 class="gate-title">Kamu berhasil! 🎉</h2>
+      <div class="gate-success-heart">💕</div>
+      <p class="gate-desc">Surat buat kamu siap. Siap-siap ya sayang 💌</p>
+      <button type="button" class="btn" id="gate-open-letter-btn">Buka Surat</button>
+    </div>
+  </div>
+
   <div class="hearts-bg" aria-hidden="true">
     <span class="heart-float">♥</span>
     <span class="heart-float">♥</span>
@@ -840,6 +1081,263 @@
   <div id="confetti"></div>
   <p class="scroll-hint">Geser ke atas untuk lanjut ♡</p>
 
+  <script>
+    // ----- Gate: Kuis + Flappy -----
+    (function () {
+      const gate = document.getElementById('gate');
+      const gateWelcome = document.getElementById('gate-welcome');
+      const gateQuiz = document.getElementById('gate-quiz');
+      const gateFlappy = document.getElementById('gate-flappy');
+      const gateSuccess = document.getElementById('gate-success');
+      const gateStartBtn = document.getElementById('gate-start-btn');
+      const quizProgress = document.getElementById('quiz-progress');
+      const quizQuestion = document.getElementById('quiz-question');
+      const quizChoices = document.getElementById('quiz-choices');
+      const gateOpenLetterBtn = document.getElementById('gate-open-letter-btn');
+
+      // Ganti dengan Form ID dari Formspree (https://formspree.io) — jawaban Lily akan dikirim ke email kamu
+      var FORMSPREE_ID = 'xnjbpnbe';
+
+      const quizData = [
+        { q: 'Kamu cinta aku dari segi apanya?', opts: ['Kepribadian & cara aku ke kamu', 'Penampilan aja', 'Keduanya & banyak hal lain', 'Gatau, pokoknya cinta'] },
+        { q: 'Kamu pernah merasa bosen ga sama aku?', opts: ['Pernah, tapi cepet ilang', 'Belum pernah', 'Kadang, tapi tetap sayang', 'Jujur kadang, tapi aku mau usahain'] },
+        { q: 'Apa yang bikin kamu stay sama aku sampai sekarang?', opts: ['Karena kamu effort & berubah', 'Karena sayang', 'Karena kita cocok', 'Karena aku mau jalan bareng kamu lama'] },
+        { q: 'Apa harapan kamu buat hubungan kita?', opts: ['Tetap sehat & serius', 'Sampai nikah', 'Jalan bareng lama', 'Semua di atas'] },
+        { q: 'Apa yang paling kamu suka dari kita berdua?', opts: ['Bisa cerita apa aja', 'Kita saling support', 'Mesra & seru bareng', 'Semua'] },
+        { q: 'Kalo aku lagi bad mood, kamu biasanya gimana?', opts: ['Nanya & dengerin', 'Kasih space dulu', 'Coba hiburin', 'Tergantung situasi'] },
+        { q: 'Kamu lebih suka kita quality time gimana?', opts: ['Call / sleep-call', 'Ketemu langsung', 'Chat panjang', 'Semua'] },
+        { q: 'Satu hal yang pengen kamu bilang ke aku sekarang?', opts: ['Aku sayang kamu', 'Makasih ya', 'Jangan jauh-jauh', 'Tetap sama aku ya'] }
+      ];
+
+      let quizIndex = 0;
+      var quizAnswers = [];
+
+      function showStep(stepEl) {
+        [gateWelcome, gateQuiz, gateFlappy, gateSuccess].forEach(function (el) {
+          el.classList.remove('active');
+        });
+        stepEl.classList.add('active');
+      }
+
+      gateStartBtn.addEventListener('click', function () {
+        quizIndex = 0;
+        quizAnswers = [];
+        renderQuiz();
+        showStep(gateQuiz);
+      });
+
+      function sendQuizToEmail(answers) {
+        if (!FORMSPREE_ID || FORMSPREE_ID === 'YOUR_FORMSPREE_FORM_ID') return;
+        var lines = ['💌 Jawaban Kuis Valentine - Lily', '', 'Tanggal: ' + new Date().toLocaleString('id-ID'), ''];
+        quizData.forEach(function (d, i) {
+          lines.push('Soal ' + (i + 1) + ': ' + d.q);
+          lines.push('Jawaban: ' + (answers[i] || '-'));
+          lines.push('');
+        });
+        var body = {
+          _subject: '💌 Jawaban Kuis Valentine - Lily',
+          message: lines.join('\n'),
+          _replyto: ''
+        };
+        fetch('https://formspree.io/f/' + FORMSPREE_ID, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        }).catch(function () {});
+      }
+
+      function renderQuiz() {
+        if (quizIndex >= quizData.length) {
+          sendQuizToEmail(quizAnswers);
+          showStep(gateFlappy);
+          initFlappy();
+          return;
+        }
+        var d = quizData[quizIndex];
+        quizProgress.textContent = 'Pertanyaan ' + (quizIndex + 1) + ' dari ' + quizData.length;
+        quizQuestion.textContent = d.q;
+        quizChoices.innerHTML = '';
+        d.opts.forEach(function (opt) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'quiz-btn';
+          btn.textContent = opt;
+          btn.addEventListener('click', function () {
+            quizAnswers[quizIndex] = opt;
+            quizIndex++;
+            renderQuiz();
+          });
+          quizChoices.appendChild(btn);
+        });
+      }
+
+      function initFlappy() {
+        var container = document.getElementById('flappy-container');
+        var bird = document.getElementById('flappy-bird');
+        var scoreEl = document.getElementById('flappy-score');
+        var hint = document.getElementById('flappy-hint');
+        var startOverlay = document.getElementById('flappy-start-overlay');
+        var gameover = document.getElementById('flappy-gameover');
+        var startBtn = document.getElementById('flappy-start-btn');
+        var retryBtn = document.getElementById('flappy-retry-btn');
+
+        var birdTop = 50;
+        var velocity = 0;
+        var gravity = 0.6;
+        var pipes = [];
+        var score = 0;
+        var gameStarted = false;
+        var gameOver = false;
+        var animId = null;
+        var WIN_SCORE = 5;
+        var pipeW = 50;
+        var gap = 120;
+        var containerHeight = 420;
+        var containerWidth = container.offsetWidth || 320;
+
+        function spawnPipe() {
+          var gapTop = 80 + Math.random() * (containerHeight - gap - 160);
+          var topH = gapTop;
+          var bottomH = containerHeight - gapTop - gap;
+          var pipe = {
+            x: containerWidth,
+            topH: topH,
+            bottomH: bottomH,
+            passed: false
+          };
+          pipes.push(pipe);
+        }
+
+        function flap() {
+          if (!gameStarted || gameOver) return;
+          velocity = -9;
+        }
+
+        function startGame() {
+          gameStarted = true;
+          gameOver = false;
+          startOverlay.classList.add('hidden');
+          hint.classList.add('hidden');
+          birdTop = containerHeight / 2 - 18;
+          velocity = 0;
+          pipes = [];
+          score = 0;
+          scoreEl.textContent = '0 / ' + WIN_SCORE;
+          gameover.classList.remove('show');
+          spawnPipe();
+          startPipeDraw();
+          loop();
+        }
+
+        function endGame() {
+          gameOver = true;
+          if (animId) cancelAnimationFrame(animId);
+          gameover.classList.add('show');
+          hint.classList.remove('hidden');
+        }
+
+        function winGame() {
+          gameOver = true;
+          if (animId) cancelAnimationFrame(animId);
+          showStep(gateSuccess);
+        }
+
+        function loop() {
+          if (gameOver) return;
+          velocity += gravity;
+          birdTop += velocity;
+          if (birdTop < 0) birdTop = 0;
+          if (birdTop > containerHeight - 36) {
+            endGame();
+            return;
+          }
+          bird.style.top = birdTop + 'px';
+
+          var birdLeft = 60;
+          var birdRight = 96;
+          var birdT = birdTop;
+          var birdB = birdTop + 36;
+
+          for (var i = pipes.length - 1; i >= 0; i--) {
+            var p = pipes[i];
+            p.x -= 4;
+            if (p.x + pipeW < birdLeft && !p.passed) {
+              p.passed = true;
+              score++;
+              scoreEl.textContent = score + ' / ' + WIN_SCORE;
+              if (score >= WIN_SCORE) {
+                winGame();
+                return;
+              }
+            }
+            var pipeLeft = p.x;
+            var pipeRight = p.x + pipeW;
+            if (birdRight > pipeLeft && birdLeft < pipeRight) {
+              if (birdT < p.topH || birdB > containerHeight - p.bottomH) {
+                endGame();
+                return;
+              }
+            }
+            if (p.x + pipeW < 0) pipes.splice(i, 1);
+          }
+
+          if (pipes.length > 0 && pipes[pipes.length - 1].x < containerWidth - 180) spawnPipe();
+          animId = requestAnimationFrame(loop);
+        }
+
+        function drawPipes() {
+          var existing = container.querySelectorAll('.flappy-pipe-el');
+          existing.forEach(function (el) { el.remove(); });
+          pipes.forEach(function (p) {
+            var top = document.createElement('div');
+            top.className = 'flappy-pipe flappy-pipe-el';
+            top.style.left = p.x + 'px';
+            top.style.top = '0';
+            top.style.height = p.topH + 'px';
+            container.appendChild(top);
+            var bot = document.createElement('div');
+            bot.className = 'flappy-pipe flappy-pipe-el';
+            bot.style.left = p.x + 'px';
+            bot.style.bottom = '0';
+            bot.style.height = p.bottomH + 'px';
+            container.appendChild(bot);
+          });
+        }
+
+        var pipeDrawInterval;
+
+        function startPipeDraw() {
+          pipeDrawInterval = setInterval(function () {
+            if (gameOver) { clearInterval(pipeDrawInterval); return; }
+            drawPipes();
+          }, 50);
+        }
+
+        container.addEventListener('click', flap);
+        container.addEventListener('touchstart', function (e) { e.preventDefault(); flap(); });
+        startBtn.addEventListener('click', startGame);
+        retryBtn.addEventListener('click', function () {
+          gameover.classList.remove('show');
+          startOverlay.classList.remove('hidden');
+          hint.classList.remove('hidden');
+          scoreEl.textContent = '0 / ' + WIN_SCORE;
+          bird.style.top = '50%';
+          gameStarted = false;
+          gameOver = false;
+          pipes = [];
+        });
+      }
+
+      gateOpenLetterBtn.addEventListener('click', function () {
+        gate.classList.add('hidden');
+        document.body.classList.remove('gate-active');
+        setTimeout(function () {
+          gate.style.display = 'none';
+          document.getElementById('section-envelope').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 500);
+      });
+    })();
+  </script>
   <script>
     (function () {
       const envelope = document.getElementById('envelope');
