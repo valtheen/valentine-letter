@@ -1321,23 +1321,32 @@
           }
           lilyKirimBtn.disabled = true;
           lilyKirimBtn.textContent = 'Mengirim...';
+          lilyTerimaKasihMsg.classList.remove('show');
           var body = {
             _subject: '💌 Kesan & Pesan Lily untuk Opang',
-            message: '--- Kesan ---\n' + kesan + '\n\n--- Pesan ---\n' + pesan,
+            Kesan: kesan.trim(),
+            Pesan: pesan.trim(),
             _replyto: ''
           };
           fetch('https://formspree.io/f/' + FORMSPREE_ID, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
-          }).then(function () {
-            lilyTerimaKasihMsg.textContent = 'Terima kasih, pesan kamu udah terkirim! Aku bakal baca ya 💕';
-            lilyTerimaKasihMsg.classList.add('show');
-            if (document.getElementById('lily-kesan')) document.getElementById('lily-kesan').value = '';
-            if (document.getElementById('lily-pesan')) document.getElementById('lily-pesan').value = '';
-            lilyKirimBtn.textContent = 'Sudah terkirim 💕';
+          }).then(function (response) {
+            if (response.ok) {
+              lilyTerimaKasihMsg.textContent = 'Terima kasih, pesan kamu udah terkirim! Aku bakal baca ya 💕';
+              lilyTerimaKasihMsg.classList.add('show');
+              if (document.getElementById('lily-kesan')) document.getElementById('lily-kesan').value = '';
+              if (document.getElementById('lily-pesan')) document.getElementById('lily-pesan').value = '';
+              lilyKirimBtn.textContent = 'Sudah terkirim 💕';
+            } else {
+              lilyTerimaKasihMsg.textContent = 'Gagal mengirim. Coba lagi ya.';
+              lilyTerimaKasihMsg.classList.add('show');
+              lilyKirimBtn.disabled = false;
+              lilyKirimBtn.textContent = 'Kirim ke Opang 💕';
+            }
           }).catch(function () {
-            lilyTerimaKasihMsg.textContent = 'Gagal mengirim. Coba lagi ya.';
+            lilyTerimaKasihMsg.textContent = 'Gagal mengirim. Cek internet dan coba lagi ya.';
             lilyTerimaKasihMsg.classList.add('show');
             lilyKirimBtn.disabled = false;
             lilyKirimBtn.textContent = 'Kirim ke Opang 💕';
